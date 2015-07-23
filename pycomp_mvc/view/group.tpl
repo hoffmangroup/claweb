@@ -17,7 +17,7 @@
 									<th>
 										<a data-toggle="tooltip" title="Total number of pairwise comparison that return robust results">{{count}}</a>
 									</th>
-								{% endfo %}
+								{% endfor %}
 								</tr>
 								
 								{% for row in cl.rows %}
@@ -39,17 +39,6 @@
 {% include 'footer.html' %}
 	<hr>
 </div>
-    <!--<script type="text/javascript" src="{{site.url}}/scripts/jquery.min.js"></script>-->
-    <!--<script type="text/javascript" src="{{site.url}}/scripts/list.js"></script>-->
-    <!--<script type="text/javascript" src="{{site.url}}/styles/dist/js/bootstrap.min.js"></script>-->
-    <!--<script type="text/javascript" src="{{site.url}}/scripts/d3.v3.min.js"></script>-->
-    <!--<script type="text/javascript">-->
-    	<!--var datasets = "{{site.datasets|join(',')}}".split(',');-->
-		<!--celltype("{{site.datasets|join(',')}}", "../data/celltypes/gene_comparisons/{{cl.ID}}.json")-->
-
-	<!--</script>-->
-    
-    
 
 
 

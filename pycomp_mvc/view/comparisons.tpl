@@ -3,7 +3,7 @@
 	<div class="jumbotron">
 		<h1>Comparison</h1>
 
-        <p>Here you can find the results for the comparison between {{comparison.group1}} and {{comparison.group2}}</p>
+        <p>Here you can find the results for the comparison between {{group1_name}} and {{group2_name}}</p>
 	</div>
 		<div class="panel-group" id="accordion">
 		<div class="panel panel-default">
@@ -45,8 +45,8 @@
 		      		<td>{{row.name1}}</td>
 		      		<td>{{row.name2}}</td>
 		      		<td>{{row.gene}}</td>
-				    <td>{{"%0.2f" % row.ttest}}</td>
-				    <td>{{'{:.2e}'.format(row.pvalue)}}</td>
+				    <td>{{"%0.2f" % row['t-test']}}</td>
+				    <td>{{'{:.2e}'.format(row['p-value'])}}</td>
                     <td><a href="{{row.gene_dist_url}}.html">distribution</a></td>
 		      	</tr>
 			{% endfor %}

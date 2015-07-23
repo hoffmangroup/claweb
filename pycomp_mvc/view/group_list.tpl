@@ -23,11 +23,11 @@
 				</tr>
 			</thead>
 			<tbody class="list">
-				{% for ct in cts %}
+				{% for group in groups %}
 				<tr>
-					<td><a class="name" href="{{ct.link}}">{{ct.name|capitalize}}</a></td>
-					<td style="text-align: center;">{{ct.nb_of_comp}}</td>
-					{% for count in ct.gene_count %}
+					<td><a class="name" href="{{group.link}}">{{group.name|capitalize}}</a></td>
+					<td style="text-align: center;">{{group.nb_of_comp}}</td>
+					{% for count in group.gene_count %}
 					<td style="text-align: center;">{{count}}</td>
 					{% endfor %}
 				</tr>

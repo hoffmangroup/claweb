@@ -8,7 +8,7 @@ import sys
 def run(config_file, comp_file):
 
     with open(config_file) as yaml_file:
-        cgf = yaml.load(yaml_file)
+        cfg = yaml.load(yaml_file)
 
     with open(comp_file) as yaml_file:
         group_and_comparisons = yaml.load(yaml_file)
@@ -26,3 +26,4 @@ if __name__ == '__main__':
 
     run(args.config_file, args.comp_file)
 
+#TODO: handle the website folder creation
