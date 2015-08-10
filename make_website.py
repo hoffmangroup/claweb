@@ -14,7 +14,6 @@ from pycomp_mvc.controller import genes
 from pycomp_mvc.controller.comparisons import comparison_list
 from pycomp_mvc.controller.comparisons import comparisons
 
-
 import pandas as pd
 
 if __name__ == '__main__':
@@ -27,10 +26,8 @@ if __name__ == '__main__':
     genes.gene_list(cfg, gac)
     groups.group_list(cfg, gac)
 
-
     for group in gac['group_definitions']:
         groups.group(cfg, gac, group['id'])
-
 
     for dataset in cfg['datasets']:
 
@@ -39,9 +36,6 @@ if __name__ == '__main__':
 
         for gene in set(df.gene.tolist()):
             genes.gene_card(cfg, gac, dataset, gene)
-
-
-
 
     # comparison_list.comparison_list(cfg, gac)
     for comp in gac['comparisons']:
