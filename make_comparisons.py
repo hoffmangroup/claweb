@@ -1,7 +1,7 @@
 __author__ = 'mickael'
 
-from pycomp.rrf.ensemble import RegularizedRandomForestClassifier
-from pycomp.website.main import main as website_main
+from skrrf.ensemble import RegularizedRandomForestClassifier
+# from pycomp.website.main import main as website_main
 
 import argparse
 import csv
@@ -131,7 +131,7 @@ def run_all(config_file, comp_file):
             pd.DataFrame(rows, columns=header).to_csv(os.path.join(dataset['output'], str(comparison['id'])), index=False, sep='\t')
 
     summarize(config_file)
-    website_main(config_file, comp_file)
+    # website_main(config_file, comp_file)
 
 
 if __name__ == '__main__':
