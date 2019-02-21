@@ -1,20 +1,21 @@
 __author__ = 'mickael'
 
-from skrrf.ensemble import RegularizedRandomForestClassifier
-# from pycomp.website.main import main as website_main
-
 import argparse
 import csv
-import pandas as pd
-import numpy as np
-from scipy import stats
 import os
 import sys
+
+import numpy as np
+import pandas as pd
 import yaml
+from scipy import stats
+from skrrf.ensemble import RegularizedRandomForestClassifier
+
+
+# from pycomp.website.main import main as website_main
 
 
 def ttest(S, groups):
-
     S = S.fillna(0.)
 
     g1_index = groups[groups == 0].index
@@ -24,11 +25,10 @@ def ttest(S, groups):
 
 
 def summarize(config_file):
-
     with open(config_file) as yaml_file:
         cgf = yaml.load(yaml_file)
 
-    header = ['id',	'cl1', 'cl2', 'gene', 'robustness', 'accuracy', 't-test', 'p-value', 'p_row']
+    header = ['id', 'cl1', 'cl2', 'gene', 'robustness', 'accuracy', 't-test', 'p-value', 'p_row']
 
     for dataset in cgf['datasets']:
         rows = []
@@ -36,15 +36,15 @@ def summarize(config_file):
         path, folder, files = os.walk(dataset['output']).next()
         files = [f for f in files if not f.startswith('.')]
 
-        #read and store the results
+        # read and store the results
         for f in files:
             with open(os.path.join(path, f)) as tsvfile:
                 reader = csv.reader(tsvfile, delimiter='\t')
-                reader.next() #skip header
+                reader.next()  # skip header
 
                 rows += [line for line in reader]
 
-        #write the summary file
+        # write the summary file
         summary_dir = "/".join(dataset['summary'].split('/')[:-1])
 
         if not os.path.exists(summary_dir):
@@ -57,8 +57,6 @@ def summarize(config_file):
 
 
 def run_all(config_file, comp_file):
-
-
     with open(config_file) as yaml_file:
         cgf = yaml.load(yaml_file)
 
@@ -71,8 +69,10 @@ def run_all(config_file, comp_file):
         expression_table = pd.read_csv(dataset['expression_table'], sep='\t', index_col=0)
         for comparison in group_and_comparisons['comparisons']:
 
-            samples1 = [group['samples'] for group in group_and_comparisons['group_definitions'] if group['id'] == comparison['group1']][0]
-            samples2 = [group['samples'] for group in group_and_comparisons['group_definitions'] if group['id'] == comparison['group2']][0]
+            samples1 = [group['samples'] for group in group_and_comparisons['group_definitions'] if
+                        group['id'] == comparison['group1']][0]
+            samples2 = [group['samples'] for group in group_and_comparisons['group_definitions'] if
+                        group['id'] == comparison['group2']][0]
 
             try:
                 samples1 = [[s for s in expression_table.columns if sample in s][0] for sample in samples1]
@@ -128,14 +128,14 @@ def run_all(config_file, comp_file):
 
             header = ['id', 'cl1', 'cl2', 'gene', 'robustness', 'accuracy', 't-test', 'p-value', 'p_row']
 
-            pd.DataFrame(rows, columns=header).to_csv(os.path.join(dataset['output'], str(comparison['id'])), index=False, sep='\t')
+            pd.DataFrame(rows, columns=header).to_csv(os.path.join(dataset['output'], str(comparison['id'])),
+                                                      index=False, sep='\t')
 
     summarize(config_file)
     # website_main(config_file, comp_file)
 
 
 if __name__ == '__main__':
-
     parser = argparse.ArgumentParser(description='Regularized Random Forest.')
     parser.add_argument('--config_file', type=str, help='full path to the config file', required=True)
     parser.add_argument('--comp_file', type=str, help='full path to the comparison file', required=True)

@@ -1,20 +1,13 @@
 __author__ = 'mickael'
 
-from pycomp_mvc.model.comparisons import comparison
-
-__author__ = 'mickael'
+import pandas as pd
 
 from pycomp_mvc import extra
-
-from pycomp_mvc.controller import index
-
-from pycomp_mvc.controller import groups
 from pycomp_mvc.controller import genes
-
+from pycomp_mvc.controller import groups
+from pycomp_mvc.controller import index
 from pycomp_mvc.controller.comparisons import comparison_list
 from pycomp_mvc.controller.comparisons import comparisons
-
-import pandas as pd
 
 if __name__ == '__main__':
     cfg, gac = extra.load_configs('/home/mickael/Projects/pycomp_mvc_test/input/global_config_ac2.yaml',

@@ -9,7 +9,6 @@ import seaborn as sns
 from ..extra import sort_samples_by_correlation
 
 
-
 def plot_gene_distribution(gene, exp_table, group_orders, groups):
     results = []
 
@@ -33,7 +32,6 @@ def plot_gene_distribution(gene, exp_table, group_orders, groups):
 
 
 def gene_dist(config_file, group_and_comparisons, dataset, gene):
-
     groups = group_and_comparisons['group_definitions']
 
     summary = pd.read_csv(dataset['summary'], sep='\t')
