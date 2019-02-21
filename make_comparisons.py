@@ -66,7 +66,7 @@ def run_all(config_file, comp_file):
         group_and_comparisons = yaml.load(yaml_file)
 
     for dataset in cgf['datasets']:
-        print dataset['name']
+        print(dataset['name'])
 
         expression_table = pd.read_csv(dataset['expression_table'], sep='\t', index_col=0)
         for comparison in group_and_comparisons['comparisons']:
@@ -78,8 +78,8 @@ def run_all(config_file, comp_file):
                 samples1 = [[s for s in expression_table.columns if sample in s][0] for sample in samples1]
                 samples2 = [[s for s in expression_table.columns if sample in s][0] for sample in samples2]
             except:
-                print "Samples defined in the comp_file do not match the samples in the expression table"
-                print "Can not find the following pattern in the expression table: ", sample
+                print("Samples defined in the comp_file do not match the samples in the expression table")
+                print("Can not find the following pattern in the expression table: ", sample)
 
             cur_expression_table = expression_table[samples1 + samples2]
 
@@ -102,7 +102,7 @@ def run_all(config_file, comp_file):
 
             expression_table_filtered = expression_table_filtered.T
 
-            print 'start', comparison['id']
+            print('start', comparison['id'])
 
             for i in range(10):
                 rrf = RegularizedRandomForestClassifier(n_estimators=int(dataset['n_tree']), oob_score=True)

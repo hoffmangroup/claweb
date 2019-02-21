@@ -14,4 +14,4 @@ def main(config_file):
     with open(os.path.join(config_file['website']['output'], "index.html"), "wb") as f:
         f.write(output.encode( "utf-8" ))
 
-    print 'index.html generated'
+    print('index.html generated')

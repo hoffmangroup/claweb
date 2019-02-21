@@ -28,7 +28,7 @@ def group(config_file, group_and_comparisons, group_id):
     with open(os.path.join(config_file['website']['output'], "groups", group['id'] + ".html"), "wb") as f:
         f.write(output.encode( "utf-8" ))
 
-    print 'group html generated'
+    print('group html generated')
 
 
 def group_list(config_file, group_and_comparisons):
@@ -43,4 +43,4 @@ def group_list(config_file, group_and_comparisons):
     with open(os.path.join(config_file['website']['output'], "group_list.html"), "wb") as f:
         f.write(output.encode( "utf-8" ))
     
-    print 'group_list.html generated'
+    print('group_list.html generated')

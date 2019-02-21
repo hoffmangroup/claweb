@@ -20,7 +20,7 @@ def gene_list(config_file, group_and_comparisons):
     with open(os.path.join(config_file['website']['output'], "gene_list.html"), "wb") as f:
         f.write(output.encode("utf-8"))
 
-    print 'gene_list generated'
+    print('gene_list generated')
 
 
 def gene_card(config_file, group_and_comparisons, dataset, gene):
@@ -42,7 +42,7 @@ def gene_card(config_file, group_and_comparisons, dataset, gene):
     with open(os.path.join(config_file['website']['output'], 'genes', dataset['name'], gene + ".html"), "wb") as f:
         f.write(output.encode("utf-8"))
 
-    print 'gene_card generated', gene
+    print('gene_card generated', gene)
 
 
 def gene_dist(config_file, group_and_comparisons, dataset, gene):
