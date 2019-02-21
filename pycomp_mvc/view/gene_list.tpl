@@ -39,8 +39,8 @@
     </div>
     {% include 'footer.html' %}
 </div>
-<script type="text/javascript" src="{{site.url}}/scripts/list.js"></script>
-<script type="text/javascript" src="{{site.url}}/scripts/gene_list.js"></script>
+<script type="text/javascript" src="{{site.url}}/static/scripts/list.js"></script>
+<script type="text/javascript" src="{{site.url}}/static/scripts/gene_list.js"></script>
 <script type="text/javascript">
       gene_list("{{datasets_name}}");
 </script>

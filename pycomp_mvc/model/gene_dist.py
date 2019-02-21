@@ -2,7 +2,7 @@ __author__ = 'mickael'
 
 import base64
 import matplotlib.pyplot as plt
-from cStringIO import StringIO
+from io import StringIO
 import pandas as pd
 import seaborn as sns
 

@@ -43,11 +43,11 @@
 
 
 
-<script type="text/javascript" src="{{site.url}}/scripts/list.js"></script>
+<script type="text/javascript" src="{{site.url}}/static/scripts/list.js"></script>
 <script type="text/javascript">
 var options = {
 	valueNames: ['name']
 };
 var featureList = new List('table-container', options);
 </script>
-<script type="text/javascript" src="{{site.url}}/scripts/d3.v3.min.js"></script>
+<script type="text/javascript" src="{{site.url}}/static/scripts/d3.v3.min.js"></script>

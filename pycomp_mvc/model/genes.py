@@ -1,8 +1,8 @@
 __author__ = 'mickael'
 
-
 import pandas as pd
 import os
+
 
 def gene_list(config_file, group_and_comparisons):
 
