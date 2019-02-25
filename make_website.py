@@ -1,10 +1,8 @@
-import argparse
-
-__author__ = 'mickael'
-
 import sys
 import os
 import shutil
+import argparse
+
 import pandas as pd
 
 from pycomp_mvc import extra
@@ -44,7 +42,6 @@ def main(args):
         groups.group(cfg, gac, group['id'])
 
     for dataset in cfg['datasets']:
-
         df = pd.read_csv(dataset['summary'], sep='\t')
         df = df[(df.robustness == 10) & (df.accuracy > .9)]
 

@@ -7,7 +7,6 @@ Created on Oct 7, 2013
 import os
 
 from jinja2 import Environment, FileSystemLoader
-
 from ...model import comparisons as comparison_model
 
 

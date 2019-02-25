@@ -1,7 +1,5 @@
 __author__ = 'mickael'
 
-
-from .. import extra
 from collections import defaultdict
 import os
 import pandas as pd
@@ -57,9 +55,10 @@ def comparison(config_file, group_and_comparisons, comp_id):
         df['short_name'] = df['gene'].apply(lambda x: x.split(':')[-1])
         df['gene_dist_url'] = [gene_dist_url(config_file, dataset['name'], gene) for gene in df['gene']]
 
-        rows = df.T.to_dict().values()
+        sort_by_abs_ttest_index = df['t-test'].abs().sort_values(ascending=False).index
+        df = df.reindex(sort_by_abs_ttest_index)
 
-        rows.sort(key=lambda row: abs(row['t-test']), reverse=True)
+        rows = df.T.to_dict().values()
         dataset_genes.append({'name': dataset['name'], 'n_genes': len(rows), 'rows': rows})
 
     return dataset_genes, group1_name, group2_name

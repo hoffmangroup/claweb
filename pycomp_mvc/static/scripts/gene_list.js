@@ -10,4 +10,4 @@ var gene_list = function (datasets)
 
         var transcript = new List('gene-list', options);
     }
-};
+}
