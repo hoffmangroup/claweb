@@ -14,7 +14,7 @@ def gene_list(config_file, group_and_comparisons):
         df = df[(df.robustness == 10) & (df.accuracy > .9)]
 
         genes = df.gene.value_counts().keys().tolist()
-        genes.sort(key=lambda x:x.split(':')[-1].lower())
+        genes.sort(key=lambda x: x.split(':')[-1].lower())
 
         genes = [{"name": gene.split(':')[-1],"filename": gene + '.html'} for gene in genes]
 
@@ -47,7 +47,6 @@ def gene_card(config_file, group_and_comparisons, dataset, gene):
         down_in_cl1_count = group_df[(group_df['t-test'] <= 0) & (group_df['cl1'] == group['id'])].shape[0]
         down_in_cl2_count = group_df[(group_df['t-test'] > 0) & (group_df['cl2'] == group['id'])].shape[0]
 
-
         groups.append({'name': group['name'],
                        'rows': rows,
                        'up_count': up_in_cl1_count + up_in_cl2_count,
@@ -55,11 +54,12 @@ def gene_card(config_file, group_and_comparisons, dataset, gene):
 
     groups.sort(key=lambda x: x['up_count'] + x['down_count'], reverse=True)
 
-    d = {"name": gene.split(':')[-1],
-         "infos": groups,
-         "dataset": dataset['name'],
-         "coordinates": gene,
-         }
+    d = {
+        "name": gene.split(':')[-1],
+        "infos": groups,
+        "dataset": dataset['name'],
+        "coordinates": gene
+    }
 
     gene_dist_url = os.path.join(config_file['website']['url'], 'gene_distribution', dataset['name'], gene)
 

@@ -10,7 +10,6 @@ import os
 from jinja2 import Environment, FileSystemLoader
 
 
-
 def group(config_file, group_and_comparisons, group_id):
 
     header = []
@@ -22,12 +21,9 @@ def group(config_file, group_and_comparisons, group_id):
         df = pd.read_csv(dataset['summary'], sep='\t')
         df = df[(df.robustness == 10) & (df.accuracy > .9) & ((df.cl1 == group_id) | (df.cl2 == group_id))]
 
-
-
         header.append([dataset['name'], df.id.value_counts().size])
         gene_count = list(df.gene.value_counts().iteritems())
         genes_counts.append(gene_count)
-
 
     df = pd.DataFrame(genes_counts).T
 
@@ -67,6 +63,5 @@ def group_list(config_file, group_and_comparisons):
             'nb_of_comp': max(nb_of_comps),
             'gene_count': nb_of_genes
         })
-
 
     return sorted(groups, key=lambda x: x['name'].lower())
