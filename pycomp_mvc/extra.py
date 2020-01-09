@@ -1,6 +1,6 @@
 __author__ = 'mickael'
 
-
+import os
 import yaml
 import numpy as np
 import pandas as pd
@@ -13,17 +13,27 @@ def load_config(config_path):
 
     assert 'datasets' in cfg
 
+    if 'basedir' not in cfg:
+        cfg['basedir'] = os.getcwd()
+    elif cfg['basedir'] == 'config':
+        cfg['basedir'] = os.path.dirname(config_path)
+
     for dataset in cfg['datasets']:
         assert 'name' in dataset
         assert 'n_tree' in dataset
 
         if 'output' not in dataset:
-            dataset['output'] = '{}_{}'.format(
-                dataset['name'], dataset['n_tree'])
+            output = '{}_{}'.format(dataset['name'], dataset['n_tree'])
+            dataset['output'] = os.path.join(cfg['basedir'], output)
 
         if 'summary' not in dataset:
-            dataset['summary'] = '{}_summary.tsv'.format(
-                dataset['output'])
+            summary = '{}_summary.tsv'.format(dataset['output'])
+            dataset['summary'] = os.path.join(cfg['basedir'], summary)
+
+    if 'website' not in cfg:
+        cfg['website'] = dict()
+        cfg['website']['output'] = os.path.join(cfg['basedir'], 'website')
+        cfg['website']['url'] = './'
 
     return cfg
 
@@ -32,7 +42,7 @@ def load_configs(config_file, group_and_comparisons):
     cfg = load_config(config_file)
 
     with open(group_and_comparisons) as yaml_file:
-        group_and_comparisons = yaml.load(yaml_file)
+        group_and_comparisons = yaml.safe_load(yaml_file)
 
     return cfg, group_and_comparisons
 

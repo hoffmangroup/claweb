@@ -14,9 +14,13 @@ def group(config_file, group_and_comparisons, group_id):
     template = env.get_template('default.tpl')
     child_template = 'group.tpl'
 
+    site = config_file['website'].copy()
+    if site['url'] == './':
+        site['url'] = '../'
+
     # load the results
     group = groups_model.group(config_file, group_and_comparisons, group_id)
-    output = template.render(cl=group, site=config_file['website'], tpl=child_template)
+    output = template.render(cl=group, site=site, tpl=child_template)
 
     output_dir = os.path.join(config_file['website']['output'], "groups")
 

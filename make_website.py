@@ -63,7 +63,7 @@ def parse_args(args):
 if __name__ == '__main__':
     # args = sys.argv[1:]
     args = [
-        '/biga/01_TF_RRF_500/global_config.yaml',
-        '/biga/01_TF_RRF_500/f5_group_and_comparisons.yaml']
+        '/biga/MLf5onto/Results/28_skrrf_hg38_new_onto_cd/global_config.yaml',
+        '/biga/MLf5onto/Results/28_skrrf_hg38_new_onto_cd/20170801_group_and_comparisons.yaml']
 
     main(parse_args(args))

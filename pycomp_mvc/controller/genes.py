@@ -29,9 +29,13 @@ def gene_card(config_file, group_and_comparisons, dataset, gene):
     template = env.get_template('default.tpl')
     child_template = 'gene_card.tpl'
 
+    site = config_file['website'].copy()
+    if site['url'] == './':
+        site['url'] = '../../'
+
     d, gene_dist_url = genes_model.gene_card(config_file, group_and_comparisons, dataset, gene)
 
-    output = template.render(gene=d, site=config_file['website'], gene_dist=gene_dist_url, tpl=child_template)
+    output = template.render(gene=d, site=site, gene_dist=gene_dist_url, tpl=child_template)
 
     output_dir = os.path.join(config_file['website']['output'], "genes", dataset['name'])
 
