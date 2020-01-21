@@ -1,0 +1,2 @@
+recursive-include pycomp_mvc/static *
+recursive-include pycomp_mvc/view *.tpl *.html
