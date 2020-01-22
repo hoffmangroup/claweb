@@ -15,8 +15,8 @@ def group(config_file, group_and_comparisons, group_id):
     child_template = 'group.tpl'
 
     site = config_file['website'].copy()
-    if site['url'] == './':
-        site['url'] = '../'
+    if site['url'] == '.':
+        site['url'] = '..'
 
     # load the results
     group = groups_model.group(config_file, group_and_comparisons, group_id)
