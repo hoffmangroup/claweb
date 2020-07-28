@@ -33,7 +33,7 @@ def load_config(config_path):
     if 'website' not in cfg:
         cfg['website'] = dict()
         cfg['website']['output'] = os.path.join(cfg['basedir'], 'website')
-        cfg['website']['url'] = './'
+        cfg['website']['url'] = '.'
 
     return cfg
 

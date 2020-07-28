@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import sys
 import os
 import shutil
@@ -21,9 +23,9 @@ def main(args):
         os.makedirs(cfg['website']['output'])
 
     # copy JS and CSS files to the website base directory
-    this_path = os.path.dirname(os.path.realpath(__file__))
+    pycomp_module_path = os.path.dirname(extra.__file__)
 
-    static_path = os.path.join(this_path, 'pycomp_mvc', 'static')
+    static_path = os.path.join(pycomp_module_path, 'static')
     static_output_path = os.path.join(cfg['website']['output'], 'static')
 
     if not os.path.exists(static_output_path):
@@ -61,9 +63,7 @@ def parse_args(args):
 
 
 if __name__ == '__main__':
-    # args = sys.argv[1:]
-    args = [
-        '/biga/MLf5onto/Results/28_skrrf_hg38_new_onto_cd/global_config.yaml',
-        '/biga/MLf5onto/Results/28_skrrf_hg38_new_onto_cd/20170801_group_and_comparisons.yaml']
-
+    args = sys.argv[1:]
+    parse_args(args)
+    # print("hello")
     main(parse_args(args))

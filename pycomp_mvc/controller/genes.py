@@ -30,8 +30,8 @@ def gene_card(config_file, group_and_comparisons, dataset, gene):
     child_template = 'gene_card.tpl'
 
     site = config_file['website'].copy()
-    if site['url'] == './':
-        site['url'] = '../../'
+    if site['url'] == '.':
+        site['url'] = '../..'
 
     d, gene_dist_url = genes_model.gene_card(config_file, group_and_comparisons, dataset, gene)
 
