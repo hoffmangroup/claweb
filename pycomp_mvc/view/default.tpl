@@ -7,10 +7,10 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<!-- Le styles -->
-	<link rel="stylesheet" href="{{site.url}}/static/styles/dist/css/bootstrap.min.css" />
-	<link rel="stylesheet" href="{{site.url}}/static/styles/dist/css/bootstrap-theme.min.css" />
-	<link rel="stylesheet" href="{{site.url}}/static/styles/navbar-fixed-top.css" />
-	<link rel="stylesheet" href="{{site.url}}/static/styles/bootstrap-hack.css" />
+	<link rel="stylesheet" href="{{site.url}}\static\styles\dist\css\bootstrap.min.css" />
+	<link rel="stylesheet" href="{{site.url}}\static\styles\dist\css\bootstrap-theme.min.css" />
+	<link rel="stylesheet" href="{{site.url}}\static\styles\navbar-fixed-top.css" />
+	<link rel="stylesheet" href="{{site.url}}\static\styles\bootstrap-hack.css" />
 
 	<!-- Fav and touch icons -->
 	<!-- <link rel="shortcut icon" href="{{site.url}}/ico/favicon.ico"> -->
@@ -25,13 +25,13 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{site.url}}/index.html">Cell Lineage Analysis</a>
+            <a class="navbar-brand" href="{{site.url}}\index.html">Cell Lineage Analysis</a>
           </div>
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li><a href="{{site.url}}/group_list.html">Groups</a></li>
-  			<li><a href="{{site.url}}/comparison_list.html">Comparisons</a></li>
-  			<li><a href="{{site.url}}/gene_list.html">Genes</a></li>
+              <li><a href="{{site.url}}\group_list.html">Groups</a></li>
+  			<li><a href="{{site.url}}\comparison_list.html">Comparisons</a></li>
+  			<li><a href="{{site.url}}\gene_list.html">Genes</a></li>
   			<!--<li><a href="http://osc-internal.gsc.riken.jp/~jayson/clv/">Lineage view</a></li>-->
             </ul>
             <ul class="nav navbar-nav navbar-right">

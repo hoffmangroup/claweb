@@ -32,32 +32,32 @@ def main(args):
         shutil.copytree(static_path, static_output_path)
 
     # create index.html
-    index.main(cfg)
-
-    # create subsection main pages
-    comparison_list.comparison_list(cfg, gac)
-    genes.gene_list(cfg, gac)
-    groups.group_list(cfg, gac)
+    # index.main(cfg)
+    #
+    # # create subsection main pages
+    # comparison_list.comparison_list(cfg, gac)
+    # genes.gene_list(cfg, gac)
+    # groups.group_list(cfg, gac)
 
     # create individual web pages
-    for group in gac['group_definitions']:
-        groups.group(cfg, gac, group['id'])
+    # for group in gac['group_definitions']:
+    #     groups.group(cfg, gac, group['id'])
 
     for dataset in cfg['datasets']:
         df = pd.read_csv(dataset['summary'], sep='\t')
         df = df[(df.robustness == 10) & (df.accuracy > .9)]
 
-        for gene in set(df.gene.tolist()):
-            genes.gene_card(cfg, gac, dataset, gene)
+        assert args.gene in df.gene.unique()
+        # for gene in set(df.gene.tolist()):
+        genes.gene_card(cfg, gac, dataset, args.gene)
 
-    for comp in gac['comparisons']:
-        comparisons.comparisons(cfg, gac, comp['id'])
 
 
 def parse_args(args):
     parser = argparse.ArgumentParser(description='Make website')
     parser.add_argument('config', type=str, help='path to config file')
     parser.add_argument('group_and_comparison', type=str, help='path to group and comparison file')
+    parser.add_argument('gene', type=str, help='Generate gene card for specified gene')
 
     return parser.parse_args(args)
 
