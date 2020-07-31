@@ -58,3 +58,23 @@ sup {
   stroke: #000;
 }
 
+.hiddenRow {
+    padding: 0 !important;
+}
+
+.more-less {
+    color: #212121;
+}
+
+.apanel {
+    font-style: normal;
+}
+
+.main-row {
+    font-style: normal;
+}
+
+.gi-30px{font-size: 30px;}
+.gi-3x{font-size: 3em;}
+.gi-4x{font-size: 4em;}
+.gi-5x{font-size: 5em;}
