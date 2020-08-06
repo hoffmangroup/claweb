@@ -7,8 +7,8 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<!-- Le styles -->
-	<link rel="stylesheet" href="{{site.url}}\static\styles\dist\css\bootstrap.min.css" />
-	<link rel="stylesheet" href="{{site.url}}\static\styles\dist\css\bootstrap-theme.min.css" />
+	<link rel="stylesheet" href="{{site.url}}\static\styles\dist\css\bootstrap.css" />
+	<link rel="stylesheet" href="{{site.url}}\static\styles\dist\css\bootstrap-theme.css" />
 	<link rel="stylesheet" href="{{site.url}}\static\styles\navbar-fixed-top.css" />
 	<link rel="stylesheet" href="{{site.url}}\static\styles\bootstrap-hack.css" />
 

@@ -8,16 +8,16 @@
 		</ul>
 	</div>
     <div class="apanel">
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <td style="width:60%" rowspan="2">Cell type</td>
-                        <td colspan="3">Higher in</td>
+                        <td rowspan="2">Cell type</td>
+                        <td style="text-align: center " colspan="3">Higher expression in</td>
                     </tr>
                     <tr>
-                        <td style="width:13%"><span class="label label-danger">This cell type</span></td>
-                        <td style="width:13%"><span class="label label-primary">Comparison cell type</span></td>
-                        <td style="width:13%">Neither</td>
+                        <td class="td-count-col-header td-up">This cell type</td>
+                        <td class="td-count-col-header td-down">Comparison cell type</td>
+                        <td class="td-count-col-header td-neither">Neither</td>
                     </tr>
 
 
@@ -26,18 +26,18 @@
                 <tbody>
                 {% for group in gene.infos %}
                     <tr data-toggle="collapse" data-target="#collapse{{ loop.index }}" class="main-row">
-                        <td style="width:60%"><i class="more-less glyphicon glyphicon-plus gi-10px"></i> {{group.name.split(";;")[0]}}</td>
-                        <td style="width:13%">{{group.up_count}}</td>
-                        <td style="width:13%">{{group.down_count}}</td>
-                        <td style="width:13%">{{group.neither}}</td>
+                        <td ><i class="more-less glyphicon glyphicon-plus gi-10px"></i> {{group.name.split(";;")[0]}}</td>
+                        <td style="text-align:right">{{group.up_count}}</td>
+                        <td style="text-align:right">{{group.down_count}}</td>
+                        <td style="text-align:right">{{group.neither}}</td>
                     </tr>
                     <tr>
-                        <td colspan="4" class="hiddenRow">
+                        <td style="border-left-color: #ffffff" colspan="4" class="hiddenRow">
                             <div class="collapse" id="collapse{{ loop.index }}">
                                 <table class="table table-bordered table-striped ">
                                     <thead>
                                         <tr>
-                                            <td colspan="4"><strong>Comparison cell type</strong></td>
+                                            <td colspan="4">Comparison cell type</td>
 
                                         </tr>
 
@@ -46,35 +46,18 @@
 
                                     {% for row in group.rows %}
                                         <tr>
-                                            {# move logic in model #}
-                                            <td style="width:60%">{{ row[0].split(";;")[0] }}</td>
+                                            <td>{{ row[0].split(";;")[0] }}</td>
                                             {% if row[1] == 1%}
-                                            <td style="width:13%;background-color: #dca7a7">{{ row[1] }}</td>
+                                            <td class="td-count-col td-up"></td>
                                             {% else %}
-                                                <td style="width:13%">{{ row[1] }}</td>
+                                                <td class="td-count-col"></td>
                                             {% endif %}
-                                            {% if row[2] ==     1%}
-                                            <td style="width:13%;background-color: #9acfea">{{ row[2] }}</td>
+                                            {% if row[2] == 1%}
+                                            <td class="td-count-col td-down"></td>
                                             {% else %}
-                                            <td style="width:13%">{{ row[2] }}</td>
+                                            <td class="td-count-col"></td>
                                             {% endif %}
-                                            <td style="width:13%">0</td>
-{#                                        {% if row[2] >= 0 %}#}
-{#                                            {% if row[0] == group.name %}#}
-{#                                                <td><span class="label label-danger"> </span></td>#}
-{#                                            {% else %}#}
-{#                                                <td><span class="label label-primary"> </span></td>#}
-{#                                            {% endif %}#}
-{#                                            <td>{{row[1]}}</td>#}
-{#                                        {% else %}#}
-{#                                            {% if row[1] == group.name %}#}
-{#                                                <td><span class="label label-danger"> </span></td>#}
-{#                                            {% else %}#}
-{#                                                <td><span class="label label-primary"> </span></td>#}
-{#                                            {% endif %}#}
-{#                                            <td>{{row[0]}}</td>#}
-{#                                        {% endif %}#}
-
+                                            <td class="td-count-col"></td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>

@@ -28,8 +28,9 @@ def main(args):
     static_path = os.path.join(pycomp_module_path, 'static')
     static_output_path = os.path.join(cfg['website']['output'], 'static')
 
-    if not os.path.exists(static_output_path):
-        shutil.copytree(static_path, static_output_path)
+    if os.path.exists(static_output_path):
+        shutil.rmtree(static_output_path)
+    shutil.copytree(static_path, static_output_path)
 
     # create index.html
     # index.main(cfg)

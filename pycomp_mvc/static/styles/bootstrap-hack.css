@@ -59,7 +59,8 @@ sup {
 }
 
 .hiddenRow {
-    padding: 0 !important;
+    padding: 0 0 0 5% !important;
+
 }
 
 .more-less {
@@ -78,3 +79,26 @@ sup {
 .gi-3x{font-size: 3em;}
 .gi-4x{font-size: 4em;}
 .gi-5x{font-size: 5em;}
+
+
+.td-up {
+    background-color: #dca7a7 !important;
+}
+
+.td-down {
+    background-color: #9acfea !important;
+}
+
+.td-neither {
+    background-color: #f9f9f9 !important;
+}
+
+.td-count-col-header {
+    width: 13%
+}
+
+.td-count-col {
+
+    /*width: 14.73%*/
+    width: 13.68%
+}
