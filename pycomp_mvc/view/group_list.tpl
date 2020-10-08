@@ -25,7 +25,7 @@
 			<tbody class="list">
 				{% for group in groups %}
 				<tr>
-					<td><a class="name" href="{{group.link}}">{{group.name|capitalize}}</a></td>
+					<td><a class="name" href="{{group.link}}">{{group.print_name}}</a></td>
 					<td style="text-align: center;">{{group.nb_of_comp}}</td>
 					{% for count in group.gene_count %}
 					<td style="text-align: center;">{{count}}</td>

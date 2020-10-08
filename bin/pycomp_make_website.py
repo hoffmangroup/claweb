@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-
+import multiprocessing
+from functools import partial
 import sys
 import os
 import shutil
@@ -40,15 +41,23 @@ def main(args):
     groups.group_list(cfg, gac)
 
     # create individual web pages
-    for group in gac['group_definitions']:
-        groups.group(cfg, gac, group['id'])
+    pool = multiprocessing.Pool()
+    make_group = partial(groups.group, cfg, gac)
+    group_ids = [group['id'] for group in gac['group_definitions']]
+    pool.map(make_group, group_ids)
+    # for group in gac['group_definitions']:
+    #     groups.group(cfg, gac, group['id'])
 
     for dataset in cfg['datasets']:
         df = pd.read_csv(dataset['summary'], sep='\t')
         df = df[(df.robustness == 10) & (df.accuracy > .9)]
 
-        for gene in set(df.gene.tolist()):
-            genes.gene_card(cfg, gac, dataset, gene)
+        pool = multiprocessing.Pool()
+        make_gene_card = partial(genes.gene_card, cfg, gac, dataset)
+        gene_list = set(df.gene.tolist())
+        pool.map(make_gene_card, gene_list)
+        # for gene in set(df.gene.tolist()):
+        #     genes.gene_card(cfg, gac, dataset, gene)
 
     for comp in gac['comparisons']:
         comparisons.comparisons(cfg, gac, comp['id'])

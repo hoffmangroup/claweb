@@ -27,10 +27,10 @@ def group(config_file, group_and_comparisons, group_id):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    with open(os.path.join(output_dir, group['id'] + ".html"), "wb") as f:
+    with open(os.path.join(output_dir, group['print_id'] + ".html"), "wb") as f:
         f.write(output.encode("utf-8"))
 
-    print('group html generated')
+    print('group html generated: {}'.format(group['print_name']))
 
 
 def group_list(config_file, group_and_comparisons):

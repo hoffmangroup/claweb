@@ -2,7 +2,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="jumbotron">
-				<h1>{{cl.name|capitalize}}</h1>
+				<h1>{{cl.print_name}}</h1>
 				<p>The table below is a summary of cell specific genes and the number of pairwise comparison in which they are found. 
 				</p>
 			</div>
