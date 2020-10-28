@@ -26,6 +26,7 @@ def gene_list(config_file, group_and_comparisons):
 def gene_card(config_file, group_and_comparisons, dataset, gene):
 
     groupid_to_name = {group['id']: group['name'] for group in group_and_comparisons['group_definitions']}
+    group_name_to_print_name = {group['name']: group['print_name'] for group in group_and_comparisons['group_definitions']}
 
     df = pd.read_csv(dataset['summary'], sep='\t')
     n_cl = len(set(df.cl1.tolist() + df.cl2.unique().tolist()))
@@ -73,24 +74,14 @@ def gene_card(config_file, group_and_comparisons, dataset, gene):
                 higher_in_compared += 1
                 row_score[1] = 1
 
-            final_rows.append([comparison_cl] + row_score)
-            # final_rows.append([name1, name2, ttest, pval, comparison_cl])
-        # rows = [[groupid_to_name[group1], groupid_to_name[group2], ttest, pval]
-        #         for group1, group2, ttest, pval in rows]
-
-        # up_in_cl1_count = success_df[(success_df['t-test'] > 0) & (success_df['cl1'] == group['id'])].shape[0]
-        # up_in_cl2_count = success_df[(success_df['t-test'] <= 0) & (success_df['cl2'] == group['id'])].shape[0]
-        # down_in_cl1_count = success_df[(success_df['t-test'] <= 0) & (success_df['cl1'] == group['id'])].shape[0]
-        # down_in_cl2_count = success_df[(success_df['t-test'] > 0) & (success_df['cl2'] == group['id'])].shape[0]
+            final_rows.append([group_name_to_print_name[comparison_cl]] + row_score)
 
         groups.append({'name': group['name'],
+                       'print_name': group['print_name'],
                        'rows': final_rows,
                        'up_count': higher_in_this,
                        'down_count': higher_in_compared,
-                       'neither': n_comp - higher_in_this + higher_in_compared},
-                       # 'up_count': up_in_cl1_count + up_in_cl2_count,
-                       # 'down_count': down_in_cl1_count + down_in_cl2_count,
-                       # 'neither': n_comp - up_in_cl1_count + up_in_cl2_count + down_in_cl1_count + down_in_cl2_count},
+                       'neither': n_comp - higher_in_this - higher_in_compared},
                       )
 
     groups.sort(key=lambda x: x['up_count'] + x['down_count'], reverse=True)

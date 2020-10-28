@@ -45,6 +45,7 @@ def main(args):
     #     groups.group(cfg, gac, group['id'])
 
     for dataset in cfg['datasets']:
+    # for dataset in cfg['datasets'][1:2]:
         df = pd.read_csv(dataset['summary'], sep='\t')
         df = df[(df.robustness == 10) & (df.accuracy > .9)]
 

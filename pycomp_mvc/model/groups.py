@@ -21,22 +21,18 @@ def group(config_file, group_and_comparisons, group_id):
         df = pd.read_csv(dataset['summary'], sep='\t')
         df = df[(df.robustness == 10) & (df.accuracy > .9) & ((df.cl1 == group_id) | (df.cl2 == group_id))]
 
-        indexes_to_remove = []
-        for _id, rows in df.groupby("id"):
-            for gene, rows2 in rows.groupby("gene"):
-                if rows2.shape[0] > 1:
-                    indexes_to_remove.append(rows2[rows2.p_row == 0].index.tolist()[0])
-
-        df = df.drop(indexes_to_remove)
+        # indexes_to_remove = []
+        # for _id, rows in df.groupby("id"):
+        #     for gene, rows2 in rows.groupby("gene"):
+        #         if rows2.shape[0] > 1:
+        #             indexes_to_remove.append(rows2[rows2.p_row == 0].index.tolist()[0])
+        #
+        # df = df.drop(indexes_to_remove)
         header.append([dataset['name'], df.id.value_counts().size])
         gene_count = list(df.gene.value_counts().iteritems())
         genes_counts.append(gene_count)
 
     df = pd.DataFrame(genes_counts).T
-
-    group['print_name']
-    if "B cell" in group['print_name']:
-        print("smth")
 
     group = {'id': group['id'],
              'name': group['name'],

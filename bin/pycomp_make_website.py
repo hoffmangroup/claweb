@@ -15,6 +15,8 @@ from pycomp_mvc.controller import index
 from pycomp_mvc.controller.comparisons import comparison_list
 from pycomp_mvc.controller.comparisons import comparisons
 
+N_THREAD = os.cpu_count()
+
 
 def main(args):
     cfg, gac = extra.load_configs(args.config, args.group_and_comparison)
@@ -41,7 +43,7 @@ def main(args):
     groups.group_list(cfg, gac)
 
     # create individual web pages
-    pool = multiprocessing.Pool()
+    pool = multiprocessing.Pool(N_THREAD)
     make_group = partial(groups.group, cfg, gac)
     group_ids = [group['id'] for group in gac['group_definitions']]
     pool.map(make_group, group_ids)
@@ -52,7 +54,7 @@ def main(args):
         df = pd.read_csv(dataset['summary'], sep='\t')
         df = df[(df.robustness == 10) & (df.accuracy > .9)]
 
-        pool = multiprocessing.Pool()
+        pool = multiprocessing.Pool(N_THREAD)
         make_gene_card = partial(genes.gene_card, cfg, gac, dataset)
         gene_list = set(df.gene.tolist())
         pool.map(make_gene_card, gene_list)

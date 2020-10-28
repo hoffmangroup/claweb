@@ -26,7 +26,7 @@
                 <tbody>
                 {% for group in gene.infos %}
                     <tr data-toggle="collapse" data-target="#collapse{{ loop.index }}" class="main-row">
-                        <td ><i class="more-less glyphicon glyphicon-plus gi-10px"></i> {{group.name.split(";;")[0]}}</td>
+                        <td ><i class="more-less glyphicon glyphicon-plus gi-10px"></i> {{group.print_name}}</td>
                         <td style="text-align:right">{{group.up_count}}</td>
                         <td style="text-align:right">{{group.down_count}}</td>
                         <td style="text-align:right">{{group.neither}}</td>
