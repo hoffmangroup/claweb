@@ -50,19 +50,19 @@ def main(args):
     # for group in gac['group_definitions']:
     #     groups.group(cfg, gac, group['id'])
 
-    for dataset in cfg['datasets']:
-        df = pd.read_csv(dataset['summary'], sep='\t')
-        df = df[(df.robustness == 10) & (df.accuracy > .9)]
-
-        pool = multiprocessing.Pool(N_THREAD)
-        make_gene_card = partial(genes.gene_card, cfg, gac, dataset)
-        gene_list = set(df.gene.tolist())
-        pool.map(make_gene_card, gene_list)
-        # for gene in set(df.gene.tolist()):
-        #     genes.gene_card(cfg, gac, dataset, gene)
-
-    for comp in gac['comparisons']:
-        comparisons.comparisons(cfg, gac, comp['id'])
+    # for dataset in cfg['datasets']:
+    #     df = pd.read_csv(dataset['summary'], sep='\t')
+    #     df = df[(df.robustness == 10) & (df.accuracy > .9)]
+    #
+    #     pool = multiprocessing.Pool(N_THREAD)
+    #     make_gene_card = partial(genes.gene_card, cfg, gac, dataset)
+    #     gene_list = set(df.gene.tolist())
+    #     pool.map(make_gene_card, gene_list)
+    #     # for gene in set(df.gene.tolist()):
+    #     #     genes.gene_card(cfg, gac, dataset, gene)
+    #
+    # for comp in gac['comparisons']:
+    #     comparisons.comparisons(cfg, gac, comp['id'])
 
 
 def parse_args(args):

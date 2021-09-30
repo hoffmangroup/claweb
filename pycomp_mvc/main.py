@@ -14,8 +14,6 @@ def run(config_file, comp_file):
         group_and_comparisons = yaml.load(yaml_file)
 
 
-
-
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Regularized Random Forest.')

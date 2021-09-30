@@ -31,6 +31,14 @@ setup(
     ],
     python_requires='>=3.6',
     scripts=['bin/pycomp_make_website.py'], install_requires=['pandas'],
+    entry_points = {
+        'console_scripts': [
+            'pycomp-make-gac=pycomp.f5clonto_helper.parse_20170801:main',
+            'pycomp-make-graph-coord=pycomp.f5clonto_helper.make_ontoviewer_coords:main',
+            'pycomp-make-updown-count=pycomp.f5clonto_helper.up_down_neither_count:main',
+            'pycomp-plot-ontology=pycomp.f5clonto_helper.ontoviewer:main',
+        ]
+    },
     include_package_data=True
 )
 

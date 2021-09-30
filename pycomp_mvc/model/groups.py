@@ -3,11 +3,8 @@ Created on Oct 7, 2013
 
 @author: mmendez
 """
-import json
 import pandas as pd
-import yaml
 import os
-from jinja2 import Environment, FileSystemLoader
 
 
 def group(config_file, group_and_comparisons, group_id):
@@ -15,19 +12,14 @@ def group(config_file, group_and_comparisons, group_id):
     header = []
     genes_counts = []
 
-    group = [group for group in group_and_comparisons['group_definitions'] if group_id == group['id']][0]
+    group = [group
+             for group in group_and_comparisons['group_definitions']
+             if group_id == group['id']][0]
 
     for dataset in config_file['datasets']:
         df = pd.read_csv(dataset['summary'], sep='\t')
         df = df[(df.robustness == 10) & (df.accuracy > .9) & ((df.cl1 == group_id) | (df.cl2 == group_id))]
 
-        # indexes_to_remove = []
-        # for _id, rows in df.groupby("id"):
-        #     for gene, rows2 in rows.groupby("gene"):
-        #         if rows2.shape[0] > 1:
-        #             indexes_to_remove.append(rows2[rows2.p_row == 0].index.tolist()[0])
-        #
-        # df = df.drop(indexes_to_remove)
         header.append([dataset['name'], df.id.value_counts().size])
         gene_count = list(df.gene.value_counts().iteritems())
         genes_counts.append(gene_count)
@@ -69,7 +61,7 @@ def group_list(config_file, group_and_comparisons):
         groups.append({
             'name': group['name'],
             'print_name': group['print_name'],
-            'link': os.path.join(config_file['website']['url'], 'groups', group['print_id'] + '.html'),
+            'link': os.path.join(config_file['website']['url'], 'groups', group['print_id'].replace(":", "_") + '.html'),
             'nb_of_comp': max(nb_of_comps),
             'gene_count': nb_of_genes
         })
