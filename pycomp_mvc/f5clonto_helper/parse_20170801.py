@@ -6,8 +6,8 @@ from typing import List
 
 import yaml
 
-from . terms import CLTerm
-from . terms import Term
+from .terms import CLTerm
+from .terms import Term
 
 
 def is_f5_sample(term_id):
@@ -110,33 +110,39 @@ class Terms:
 
         return term_id_to_cl_term
 
-    def get_similar_terms(self):
-        seen_term = set()
-        seen_collapsed_cl = set()
-        res = []
+    @property
+    def get_terms_with_same_samples(self) -> List[List[CLTerm]]:
+        """Return a list that lists the terms with the exact same non-empty set of samples.
 
-        # find similar terms
-        for cl0, term0 in self.cl_terms.items():
-            if cl0 in seen_collapsed_cl:
+        :return: List[List[CLTerm]]
+        """
+        res: List[List[CLTerm]] = []
+
+        # keep track of the terms known with same
+        # sample set as another term to avoid
+        # reporting a term twice.
+        processed_term_ids = set()
+
+        # exclude terms without samples to avoid considering them as similar.
+        terms_with_samples = [term
+                              for term in self.cl_terms.values()
+                              if term.has_sample]
+
+        # for each term, check every following terms
+        for i, term0 in enumerate(terms_with_samples[:-1]):
+            # skip term if we already know that it is similar to another term.
+            if term0.term_id in processed_term_ids:
                 continue
-            similar_terms = [term0]
-            seen_term.add(cl0)
-            for cl1, term1 in self.cl_terms.items():
 
-                # if seen or different: continue
-                if cl1 in seen_term.union(seen_collapsed_cl):
-                    continue
-                if not term0.has_sample or not term1.has_sample:
-                    continue
-                if set.symmetric_difference(set(term0.samples), set(term1.samples)):
-                    continue
+            # check if the following samples have the same samples
+            similar_terms = [term
+                             for term in terms_with_samples[i+1:]
+                             if set(term.samples) == set(term0.samples)]
 
-                # else we consider terms as similar
-                similar_terms.append(term1)
-                seen_collapsed_cl.add(cl0)
-                seen_collapsed_cl.add(cl1)
-
-            if len(similar_terms) > 1:
+            # add current term to list of similar samples
+            # and update `res`
+            if similar_terms:
+                similar_terms.append(term0)
                 res.append(similar_terms)
 
         return res
@@ -172,7 +178,7 @@ class Terms:
     def collapse_cl_terms(self):
         res = self.cl_terms
         cl_to_new_term = dict()
-        list_of_similar_terms = self.get_similar_terms()
+        list_of_similar_terms = self.get_terms_with_same_samples
 
         # merge similar terms
         for similar_terms in list_of_similar_terms:
@@ -249,11 +255,19 @@ def main(input_cl_ontology, output_group_and_comparison):
         yaml_file.write(yaml.dump(yaml_dict, default_flow_style=False))
 
 
-if __name__ == '__main__':
+def parse_args():
     parser = argparse.ArgumentParser(description='Make group and comparison file from the FANTOM5 cell ontology ')
     parser.add_argument('input_fantom5_ontology', type=str,
                         help='full path to the FANTOM5 cell ontology', )
     parser.add_argument('output_gac_file', type=str, help='output filepath')
     args = parser.parse_args(sys.argv[1:])
+    return args
 
+
+def cli_make_gac():
+    args = parse_args()
     main(args.input_fantom5_ontology, args.output_gac_file)
+
+
+if __name__ == '__main__':
+    cli_make_gac()

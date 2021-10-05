@@ -162,7 +162,12 @@ def main(graph_filename, up_down_filename, gene="SPI1", outfile="ontoviewer_plot
     plt.close(fig)
 
 
-if __name__ == "__main__":
+def cli_plot_ontology():
+    args = parse_args()
+    main(args.graph_json, args.lineage_scores, args.gene, args.outfile_name)
+
+
+def parse_args():
     parser = argparse.ArgumentParser(description='Plot a graph with lineage scores in nodes.')
     parser.add_argument('graph_json', type=str,
                         help='path to the graph description in json format.')
@@ -176,4 +181,8 @@ if __name__ == "__main__":
     if args.outfile_name is None:
         args.outfile_name = f"{args.gene}.pdf"
 
-    main(args.graph_json, args.lineage_scores, args.gene, args.outfile_name)
+    return args
+
+
+if __name__ == "__main__":
+    cli_plot_ontology()

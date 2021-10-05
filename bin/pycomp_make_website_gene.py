@@ -54,7 +54,6 @@ def main(args):
         genes.gene_card(cfg, gac, dataset, args.gene)
 
 
-
 def parse_args(args):
     parser = argparse.ArgumentParser(description='Make website')
     parser.add_argument('config', type=str, help='path to config file')

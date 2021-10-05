@@ -5,7 +5,8 @@ from setuptools import setup
 def post_install_cleaning():
     """Remove dist, eggs, and build directory after install"""
 
-    import shutil, glob
+    import shutil
+    import glob
     shutil.rmtree('dist')
     shutil.rmtree('build')
     shutil.rmtree(glob.glob('*.egg-info')[0])
@@ -33,10 +34,12 @@ setup(
     scripts=['bin/pycomp_make_website.py'], install_requires=['pandas'],
     entry_points = {
         'console_scripts': [
-            'pycomp-make-gac=pycomp.f5clonto_helper.parse_20170801:main',
-            'pycomp-make-graph-coord=pycomp.f5clonto_helper.make_ontoviewer_coords:main',
-            'pycomp-make-updown-count=pycomp.f5clonto_helper.up_down_neither_count:main',
-            'pycomp-plot-ontology=pycomp.f5clonto_helper.ontoviewer:main',
+            'pycomp-make-gac=pycomp_mvc.f5clonto_helper.parse_20170801:cli_make_gac',
+            'pycomp-make-graph-coord=pycomp_mvc.f5clonto_helper.make_ontoviewer_coords:cli_make_graph_coord',
+            'pycomp-make-updown-count=pycomp_mvc.f5clonto_helper.up_down_neither_count:cli_make_updown_count',
+            'pycomp-plot-ontology=pycomp_mvc.f5clonto_helper.ontoviewer:cli_plot_ontology',
+            'pycomp-make-website=pycomp_mvc.controller.master:cli_make_website',
+            'pycomp-make-website-comparisons=pycomp_mvc.controller.master:cli_make_website_comparisons',
         ]
     },
     include_package_data=True

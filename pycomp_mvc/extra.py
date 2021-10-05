@@ -5,8 +5,13 @@ import yaml
 
 
 def load_config(config_path):
-    with open(config_path) as yaml_file:
-        cfg = yaml.safe_load(yaml_file)
+    assert isinstance(config_path, str) or isinstance(config_path, dict)
+
+    if isinstance(config_path, str):
+        with open(config_path) as yaml_file:
+            cfg = yaml.safe_load(yaml_file)
+    else:
+        cfg = config_path
 
     assert 'datasets' in cfg
 
@@ -35,11 +40,24 @@ def load_config(config_path):
     return cfg
 
 
+def load_gac(gac_file):
+    assert isinstance(gac_file, str) or isinstance(gac_file, dict)
+
+    if isinstance(gac_file, str):
+        with open(gac_file) as yaml_file:
+            gac = yaml.safe_load(yaml_file)
+    else:
+        gac = gac_file
+
+    assert 'comparisons' in gac
+    assert 'group_definitions' in gac
+
+    return gac
+
+
 def load_configs(config_file, group_and_comparisons):
     cfg = load_config(config_file)
-
-    with open(group_and_comparisons) as yaml_file:
-        group_and_comparisons = yaml.safe_load(yaml_file)
+    group_and_comparisons = load_gac(group_and_comparisons)
 
     return cfg, group_and_comparisons
 

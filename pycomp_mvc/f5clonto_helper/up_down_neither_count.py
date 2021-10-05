@@ -57,7 +57,7 @@ def main(gac_filepath, summary_filepath, dataset_name, rob=10, acc=.9, outdir='.
         json.dump(dict(res), outfile)
 
 
-if __name__ == "__main__":
+def parse_args():
     parser = argparse.ArgumentParser(description='Collect lineage scores for each gene.')
     parser.add_argument('gac_filepath', type=str,
                         help='path to the yaml file with group and comparison definitions.')
@@ -73,5 +73,14 @@ if __name__ == "__main__":
     if args.dataset_name is None:
         args.dataset_name = os.path.basename(os.path.splitext(args.summary_filepath)[0])
 
+    return args
+
+
+def cli_make_updown_count():
+    args = parse_args()
     main(args.gac_filepath, args.summary_filepath,
          args.dataset_name, args.rob, args.acc, args.outdir)
+
+
+if __name__ == "__main__":
+    cli_make_updown_count()
