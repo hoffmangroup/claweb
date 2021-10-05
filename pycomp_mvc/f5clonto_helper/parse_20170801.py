@@ -2,6 +2,7 @@
 import argparse
 import sys
 from collections import defaultdict
+from typing import List
 
 import yaml
 
@@ -147,26 +148,26 @@ class Terms:
             if not has_term_in_ancestors:
                 return i, term_id
 
-    def get_youngest_child(self, term_ids):
-        """Youngest child is a synonym for most specialized cell type.
+    def get_deepest_child_from_term_ids(self, term_ids: List[str]) -> str:
+        """Deepest child is a synonym for most specialized cell type.
         Return the term_id of the cell type that has the most term_id from terms_ids in it's ancestors.
         example: A - B - C - D
                        \
                          E
-        D has 3 ancestors, E has 2 ancestors. D is the youngest child.
+        D has 3 ancestors, E has 2 ancestors. D is the deepest child of A.
 
         :param term_ids: list of strings containing term_ids (["CL:...", "CL:..."], ...)
         """
-        youngest_id = term_ids[0]
-        youngest_score = 0
+        deepest_id = term_ids[0]
+        deepest_score = 0
         for term_id in term_ids:
             ancestors = self.ancestors(term_id, lambda x: x.startswith('CL:'), set())
             score = sum(1 for _id in term_ids if _id in ancestors)
-            if score > youngest_score:
-                youngest_score = score
-                youngest_id = term_id
+            if score > deepest_score:
+                deepest_score = score
+                deepest_id = term_id
 
-        return youngest_id
+        return deepest_id
 
     def collapse_cl_terms(self):
         res = self.cl_terms
@@ -218,7 +219,7 @@ def main(input_cl_ontology, output_group_and_comparison):
     nodes_print_name = {}
     for term in terms:
         if ";;" in term.term_id:
-            youngest_child = main_terms.get_youngest_child(term.term_id.split(";;"))
+            youngest_child = main_terms.get_deepest_child_from_term_ids(term.term_id.split(";;"))
             nodes_print_id[term.name] = youngest_child
             nodes_print_name[term.name] = main_terms.cl_terms[youngest_child].name
 
