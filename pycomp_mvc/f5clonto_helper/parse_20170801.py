@@ -128,7 +128,7 @@ class Terms:
                               for term in self.cl_terms.values()
                               if term.has_sample]
 
-        # for each term, check every following terms
+        # for each term, check every following term
         for i, term0 in enumerate(terms_with_samples[:-1]):
             # skip term if we already know that it is similar to another term.
             if term0.term_id in processed_term_ids:
@@ -176,6 +176,8 @@ class Terms:
         return deepest_id
 
     def collapse_cl_terms(self):
+        # XXX: use https://github.com/dhimmel/obonet
+        # to manipulate the cell ontology
         res = self.cl_terms
         cl_to_new_term = dict()
         list_of_similar_terms = self.get_terms_with_same_samples
