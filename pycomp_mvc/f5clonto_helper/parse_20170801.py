@@ -121,7 +121,7 @@ class Terms:
         # keep track of the terms known with same
         # sample set as another term to avoid
         # reporting a term twice.
-        processed_term_ids = set()
+        processed_terms = set()
 
         # exclude terms without samples to avoid considering them as similar.
         terms_with_samples = [term
@@ -131,7 +131,7 @@ class Terms:
         # for each term, check every following term
         for i, term0 in enumerate(terms_with_samples[:-1]):
             # skip term if we already know that it is similar to another term.
-            if term0.term_id in processed_term_ids:
+            if term0 in processed_terms:
                 continue
 
             # check if the following samples have the same samples
@@ -143,6 +143,7 @@ class Terms:
             # and update `res`
             if similar_terms:
                 similar_terms.append(term0)
+                processed_terms.update(similar_terms)
                 res.append(similar_terms)
 
         return res
@@ -183,7 +184,7 @@ class Terms:
         list_of_similar_terms = self.get_terms_with_same_samples
 
         # merge similar terms
-        for similar_terms in list_of_similar_terms:
+        for i, similar_terms in enumerate(list_of_similar_terms):
             # merge terms
             new_term = CLTerm.merge_terms(similar_terms)
 
@@ -222,6 +223,7 @@ def main(input_cl_ontology, output_group_and_comparison):
     main_terms = Terms(input_cl_ontology)
     terms = main_terms.collapse_cl_terms().values()
     terms = [term for term in terms if len(term.samples) > 10]
+
 
     nodes_print_id = {}
     nodes_print_name = {}
