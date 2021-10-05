@@ -36,7 +36,7 @@
 		      		<th>Gene</th>
 				    <th>T-Test</th>
 				    <th>P-value</th>
-				    <th>link</th>
+{#				    <th>link</th>#}
 		      	</tr>
 	      	</thead>
 	      	<tbody>
@@ -47,7 +47,7 @@
 		      		<td>{{row.gene}}</td>
 				    <td>{{"%0.2f" % row['t-test']}}</td>
 				    <td>{{'{:.2e}'.format(row['p-value'])}}</td>
-                    <td><a href="{{row.gene_dist_url}}.html">distribution</a></td>
+{#                    <td><a href="{{row.gene_dist_url}}.html">distribution</a></td>#}
 		      	</tr>
 			{% endfor %}
 	      	</tbody>

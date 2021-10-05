@@ -6,8 +6,7 @@
 
 		<a href="{{site.url}}/group_list.html" class="btn btn-primary btn-lg">Groups &raquo;</a>
 		<a href="{{site.url}}/gene_list.html" class="btn btn-primary btn-lg">Genes &raquo;</a>
-
-<a href="{{site.url}}/comparisons/" class="btn btn-primary btn-lg">Comparisons &raquo;</a>
+        <a href="{{site.url}}/comparison_list.html" class="btn btn-primary btn-lg">Comparisons &raquo;</a>
 	</div>
 
   {% include 'footer.html' %}

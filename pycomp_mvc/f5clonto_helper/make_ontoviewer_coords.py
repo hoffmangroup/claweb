@@ -1,4 +1,7 @@
+import argparse
 import json
+import sys
+
 from . cytoscape_utils import get_node_attr_from_cytoscape
 
 
@@ -211,6 +214,20 @@ def main(cytoscape_file, output_graph):
 
     with open(output_graph, "w") as file_handler:
         json.dump(ontoviewer_coords, file_handler, indent=4)
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description='Make graph file with node location and edges.')
+    parser.add_argument('cytoscape_file', type=str, help='path to cytoscape xgmml file.')
+    parser.add_argument('output_graph', type=str, help='path to output file.')
+    args = parser.parse_args(sys.argv[1:])
+
+    return args
+
+
+def cli_make_graph_coord():
+    args = parse_args()
+    main(args.cytoscape_file, args.output_graph)
 
 
 if __name__ == "__main__":

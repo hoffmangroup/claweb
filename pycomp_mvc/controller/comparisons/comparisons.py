@@ -29,5 +29,7 @@ def comparisons(cfg, group_and_comparisons, comp_id):
     output = template.render(dataset_genes=dataset_genes, group1_name=g1_name, group2_name=g2_name,
                              site=cfg['website'], tpl=child_template)
 
-    with open(os.path.join(cfg['website']['output'], 'comparisons', str(comp_id) + ".html"), "wb") as f:
+    page_path = os.path.join(cfg['website']['output'], 'comparisons', str(comp_id) + ".html")
+    print(page_path, "generated")
+    with open(page_path, "wb") as f:
         f.write(output.encode("utf-8"))
