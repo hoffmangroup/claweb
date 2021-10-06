@@ -1,18 +1,62 @@
 import operator
 
+MERGE_SEPARATOR = ';;'
+
+
+class TermMerger:
+    def __init__(self, terms, merge_separator=MERGE_SEPARATOR):
+        self.terms = sorted(terms, key=operator.attrgetter('name'))
+        self.term_ids = [term.term_id for term in self.terms]
+        self.merge_separator = merge_separator
+
+    def merge(self):
+
+        name = self.merge_separator.join(term.name for term in self.terms)
+        term_id = self.merge_separator.join(self.term_ids)
+
+        term = Term(name=name, term_id=term_id,
+                    merge_separator=self.merge_separator)
+
+        term.is_a = self.get_new_is_a()
+        term.relationship = self.get_new_relationships()
+
+        return term
+
+    def get_new_is_a(self):
+        all_is_a = set()
+        for term in self.terms:
+            all_is_a.update(term.is_a)
+
+        # exclude the is_a referring to merged terms
+        new_is_a = all_is_a - frozenset(self.term_ids)
+        return list(new_is_a)
+
+    def get_new_relationships(self):
+        new_rel = set()
+        for term in self.terms:
+            for rel in term.relationship:
+                rel_type, term_id = rel
+                # exclude relationships referring to merged terms
+                if term_id not in self.term_ids:
+                    new_rel.add(rel)
+
+        return list(new_rel)
+
 
 class Term(object):
     """
     Stores terms by turning term keys into object attributes.
     """
 
-    def __init__(self, name='', term_id=0, rows=[]):
+    def __init__(self, name='', term_id='', rows=[],
+                 merge_separator=MERGE_SEPARATOR):
 
         self.term_id = term_id
         self.name = name
         self.is_a = []
         self.relationship = []
         self.subset = []
+        self.merge_separator = merge_separator
 
         for tag, value in rows:
             if tag == 'is_a':
@@ -26,22 +70,25 @@ class Term(object):
             elif tag == 'subset':
                 self.subset.append(value)
 
-    @staticmethod
-    def merge_terms(terms=[]):
-        terms.sort(key=operator.attrgetter('name'))
-        new_term = Term(name=';;'.join([term.name for term in terms]))
-        new_term.term_id = ';;'.join([term.term_id for term in terms])
-        terms_id = [term.term_id for term in terms]
+    @property
+    def is_merged_term(self):
+        return self.merge_separator in self.term_id
 
-        for term in terms:
-            new_term.is_a.extend([is_a for is_a in term.is_a if is_a not in terms_id])
-            new_term.relationship.extend(
-                [relationship for relationship in term.relationship if relationship[1] not in terms_id])
+    def update_is_a(self, update_dict):
+        new_term_ids = set()
+        for term_id in self.is_a:
+            new_term_id = update_dict.get(term_id, term_id)
+            new_term_ids.add(new_term_id)
 
-        new_term.is_a = list(set(new_term.is_a))
-        new_term.relationship = list(set(new_term.relationship))
+        self.is_a = list(new_term_ids)
 
-        return new_term
+    def update_relationship(self, update_dict):
+        new_relationships = set()
+        for rel_type, term_id in self.relationship:
+            new_term_id = update_dict.get(term_id, term_id)
+            new_relationships.add((rel_type, new_term_id))
+
+        self.relationship = list(new_relationships)
 
     def __repr__(self):
         return (f'{self.__class__.__name__}('
@@ -55,8 +102,8 @@ class CLTerm(Term):
     the list of samples associated to it.
     """
 
-    def __init__(self, term, samples=[]):
-        super().__init__(term.name, term.term_id)
+    def __init__(self, term, samples=[], merge_separator=MERGE_SEPARATOR):
+        super().__init__(term.name, term.term_id, merge_separator=merge_separator)
         self.is_a = term.is_a
         self.relationship = term.relationship
         self.samples = samples
@@ -73,22 +120,20 @@ class CLTerm(Term):
     def samples_to_str(self):
         return ",".join(self.samples).replace('FF:', '')
 
-    @staticmethod
-    def merge_terms(terms=[]):
-        new_term = Term.merge_terms(terms)
+    @classmethod
+    def from_clterms(cls, terms=[]):
+        new_term = TermMerger(terms).merge()
 
-        samples = []
+        samples = set()
         for term in terms:
-            samples.extend(term.samples)
+            samples.update(term.samples)
 
-        return CLTerm(new_term, list(set(samples)))
+        return cls(new_term, list(samples))
 
     def samples_in_common(self, term):
-        samples0 = set(self.samples)
-        samples1 = set(term.samples)
-
-        return set.intersection(samples0, samples1)
+        return set(self.samples).intersection(term.samples)
 
     def __repr__(self):
         return f'{self.__class__.__name__}({self.term_id}, {self.name})'
+
 
