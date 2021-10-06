@@ -2,7 +2,7 @@
 import argparse
 import sys
 from collections import defaultdict
-from typing import List
+from typing import List, Dict
 
 import yaml
 
@@ -94,7 +94,6 @@ class Terms:
         d = {k: list(v) for k, v in cl_human_samples.items()}
         return d
 
-    @property
     def cl_terms(self):
         term_id_to_cl_term = dict()
         cl_human_samples = self.get_cl_human_samples()
@@ -110,7 +109,6 @@ class Terms:
 
         return term_id_to_cl_term
 
-    @property
     def get_terms_with_same_samples(self) -> List[List[CLTerm]]:
         """Return a list that lists the terms with the exact same non-empty set of samples.
 
@@ -125,24 +123,24 @@ class Terms:
 
         # exclude terms without samples to avoid considering them as similar.
         terms_with_samples = [term
-                              for term in self.cl_terms.values()
+                              for term in self.cl_terms().values()
                               if term.has_sample]
 
         # for each term, check every following term
-        for i, term0 in enumerate(terms_with_samples[:-1]):
+        for i, term in enumerate(terms_with_samples[:-1]):
             # skip term if we already know that it is similar to another term.
-            if term0 in processed_terms:
+            if term in processed_terms:
                 continue
 
             # check if the following samples have the same samples
-            similar_terms = [term
-                             for term in terms_with_samples[i+1:]
-                             if set(term.samples) == set(term0.samples)]
+            similar_terms = [comp_term
+                             for comp_term in terms_with_samples[i+1:]
+                             if set(comp_term.samples) == set(term.samples)]
 
             # add current term to list of similar samples
             # and update `res`
             if similar_terms:
-                similar_terms.append(term0)
+                similar_terms.append(term)
                 processed_terms.update(similar_terms)
                 res.append(similar_terms)
 
@@ -177,44 +175,51 @@ class Terms:
         return deepest_id
 
     def collapse_cl_terms(self):
-        # XXX: use https://github.com/dhimmel/obonet
-        # to manipulate the cell ontology
-        res = self.cl_terms
+        """ Collapse CL terms with the same set of non-empty sample.
+        Update the source and the target of the edges that refer to a
+        collapsed CL term.
+
+        XXX: use https://github.com/dhimmel/obonet
+        to manipulate the cell ontology.
+        Or, store nodes and edges separately.
+
+        :return: Dict[str, CLTerm]
+        """
+
+        res: Dict[str, CLTerm] = self.cl_terms()
         cl_to_new_term = dict()
-        list_of_similar_terms = self.get_terms_with_same_samples
+        list_of_similar_terms = self.get_terms_with_same_samples()
 
         # merge similar terms
-        for i, similar_terms in enumerate(list_of_similar_terms):
+        for similar_terms in list_of_similar_terms:
             # merge terms
-            new_term = CLTerm.merge_terms(similar_terms)
+            merged_term = CLTerm.merge_terms(similar_terms)
 
             # index new term and delete the old ones
-            res[new_term.term_id] = new_term
+            res[merged_term.term_id] = merged_term
             for term in similar_terms:
-                cl_to_new_term[term.term_id] = new_term
+                cl_to_new_term[term.term_id] = merged_term
                 del res[term.term_id]
 
         # update the is_a and relationships of all terms
         for term_id, term in res.items():
             # update is_a
-            new_is_a = []
+            new_is_a = set()
             for is_a in term.is_a:
                 if is_a in cl_to_new_term:
-                    new_is_a.append(cl_to_new_term[is_a].term_id)
+                    new_is_a.add(cl_to_new_term[is_a].term_id)
                 else:
-                    new_is_a.append(is_a)
-            new_is_a = list(set(new_is_a))
-            term.is_a = new_is_a
+                    new_is_a.add(is_a)
+            term.is_a = list(new_is_a)
 
             # update relationship
-            new_relationship = []
+            new_relationship = set()
             for rel_type, parent in term.relationship:
                 if parent in cl_to_new_term:
-                    new_relationship.append((rel_type, cl_to_new_term[parent].term_id))
+                    new_relationship.add((rel_type, cl_to_new_term[parent].term_id))
                 else:
-                    new_relationship.append((rel_type, parent))
-            new_relationship = list(set(new_relationship))
-            term.relationship = new_relationship
+                    new_relationship.add((rel_type, parent))
+            term.relationship = list(new_relationship)
 
         return res
 
@@ -224,14 +229,13 @@ def main(input_cl_ontology, output_group_and_comparison):
     terms = main_terms.collapse_cl_terms().values()
     terms = [term for term in terms if len(term.samples) > 10]
 
-
     nodes_print_id = {}
     nodes_print_name = {}
     for term in terms:
         if ";;" in term.term_id:
             youngest_child = main_terms.get_deepest_child_from_term_ids(term.term_id.split(";;"))
             nodes_print_id[term.name] = youngest_child
-            nodes_print_name[term.name] = main_terms.cl_terms[youngest_child].name
+            nodes_print_name[term.name] = main_terms.cl_terms()[youngest_child].name
 
     yaml_dict = dict()
     group_definitions = [

@@ -101,7 +101,6 @@ def run_one(config_file, comp_file, comp_id):
         if not os.path.exists(dataset['output']):
             os.makedirs(dataset['output'])
 
-        print(os.getcwd())
         expression_table = pd.read_csv(dataset['expression_table'], sep='\t', index_col=0)
 
         samples1 = gac.get_samples_from_group_id(comparison['group1'])
@@ -149,8 +148,6 @@ def run_one(config_file, comp_file, comp_id):
             rrf.stratified_down_sampling = True
             accuracies.append(rrf.fit(expression_table_filtered.values, y.values).oob_score_)
             results[i] = rrf.feature_importances_
-
-
 
         results.to_csv(os.path.join(dataset['output'], str(comparison['id']) + '_fi.tsv'), sep='\t')
         gene_count = (results > 0).sum(1).sort_values()

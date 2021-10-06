@@ -56,9 +56,7 @@ class CLTerm(Term):
     """
 
     def __init__(self, term, samples=[]):
-        super().__init__()
-        self.term_id = term.term_id
-        self.name = term.name
+        super().__init__(term.name, term.term_id)
         self.is_a = term.is_a
         self.relationship = term.relationship
         self.samples = samples
