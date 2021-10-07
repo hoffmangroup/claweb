@@ -146,7 +146,7 @@ class TermDict(MutableMapping):
                               if term.has_sample]
 
         # for each term, check every following term
-        for i, term in enumerate(terms_with_samples[:-1]):
+        for i, term in enumerate(terms_with_samples):
             # skip term if we already know that it is similar to another term.
             if term in processed_terms:
                 continue
@@ -154,7 +154,7 @@ class TermDict(MutableMapping):
             # check if the following samples have the same samples
             similar_terms = [comp_term
                              for comp_term in terms_with_samples[i+1:]
-                             if frozenset(comp_term.samples) == frozenset(term.samples)]
+                             if comp_term.has_same_sample_set(term)]
 
             # add current term to list of similar samples
             # and update `res`

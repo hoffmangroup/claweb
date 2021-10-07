@@ -9,7 +9,6 @@ from itertools import combinations
 import numpy as np
 import pandas as pd
 import sklearn
-import yaml
 from scipy import stats
 from skrrf._forest import RegularizedRandomForestClassifier
 from . import extra

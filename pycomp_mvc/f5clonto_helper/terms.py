@@ -131,7 +131,10 @@ class CLTerm(Term):
         return cls(new_term, list(samples))
 
     def samples_in_common(self, term):
-        return set(self.samples).intersection(term.samples)
+        return frozenset(self.samples).intersection(term.samples)
+
+    def has_same_sample_set(self, term):
+        return frozenset(self.samples) == frozenset(term.samples)
 
     def __repr__(self):
         return f'{self.__class__.__name__}({self.term_id}, {self.name})'
