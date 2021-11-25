@@ -1,14 +1,14 @@
 
 <div class="container" id="table-container">
 	<div class="jumbotron">
-		<h1>List of comparisons</h1>
-		<p>Click on group to show the link for all comparison's results</p>
+		<h1>List of cell type pairs</h1>
+		<p>Click on a cell type to show the link for all comparison's results</p>
 	</div>
 		<div class="panel-group" id="accordion">
 		<div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
-        <strong>Group</strong>
+        <strong>Cell type</strong>
       </h4>
     </div>
     

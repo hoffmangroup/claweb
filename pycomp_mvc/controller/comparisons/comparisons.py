@@ -15,6 +15,10 @@ def comparisons(cfg, group_and_comparisons, comp_id):
     env = Environment(loader=FileSystemLoader(template_folder))
     template = env.get_template('default.tpl')
 
+    site = cfg['website'].copy()
+    if site['url'] == '.':
+        site['url'] = '..'
+
     if not os.path.exists(os.path.join(cfg['website']['output'], "comparisons")):
         os.makedirs(os.path.join(cfg['website']['output'], "comparisons"))
 
@@ -27,7 +31,7 @@ def comparisons(cfg, group_and_comparisons, comp_id):
         child_template = 'comparison_empty.tpl'
 
     output = template.render(dataset_genes=dataset_genes, group1_name=g1_name, group2_name=g2_name,
-                             site=cfg['website'], tpl=child_template)
+                             site=site, tpl=child_template)
 
     page_path = os.path.join(cfg['website']['output'], 'comparisons', str(comp_id) + ".html")
     print(page_path, "generated")

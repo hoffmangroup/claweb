@@ -1,7 +1,7 @@
 
 <div class="container" id="table-container">
 	<div class="jumbotron">
-		<h1>Comparison</h1>
+		<h1>Cell type pairs</h1>
 
         <p>Here you can find the results for the comparison between {{group1_name}} and {{group2_name}}</p>
 	</div>
