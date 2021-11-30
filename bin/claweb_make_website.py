@@ -8,12 +8,12 @@ import argparse
 
 import pandas as pd
 
-from pycomp_mvc import extra
-from pycomp_mvc.controller import genes
-from pycomp_mvc.controller import groups
-from pycomp_mvc.controller import index
-from pycomp_mvc.controller.comparisons import comparison_list
-from pycomp_mvc.controller.comparisons import comparisons
+from claweb import extra
+from claweb.controller import genes
+from claweb.controller import groups
+from claweb.controller import index
+from claweb.controller.comparisons import comparison_list
+from claweb.controller.comparisons import comparisons
 
 N_THREAD = os.cpu_count()
 

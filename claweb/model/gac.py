@@ -1,4 +1,4 @@
-from pycomp_mvc.extra import load_configs
+from claweb.extra import load_configs
 
 
 def get_used_samples(cfg_filepath, gac_filepath):
@@ -24,4 +24,4 @@ def get_used_samples(cfg_filepath, gac_filepath):
 
 
 
-#"../../../PycharmProjects/pycomp_mvc/test_website/34/global_config.yaml", "../../../PycharmProjects/pycomp_mvc/test_website/34/20170801_group_and_comparisons.yaml"
+#"../../../PycharmProjects/claweb/test_website/34/global_config.yaml", "../../../PycharmProjects/claweb/test_website/34/20170801_group_and_comparisons.yaml"
