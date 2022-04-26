@@ -4,40 +4,58 @@ import os
 import yaml
 
 
-def load_config(config_path):
-    assert isinstance(config_path, str) or isinstance(config_path, dict)
+def load_config(input_config):
+    """
+    Load a config file. Ensures that the required values are set.
+    Set default values.
 
-    if isinstance(config_path, str):
-        with open(config_path) as yaml_file:
-            cfg = yaml.safe_load(yaml_file)
+    :param input_config: a path to a config file or the configs as dict.
+    :return: The configs as dict
+    """
+    assert isinstance(input_config, str) or isinstance(input_config, dict)
+
+    # read the yaml config file and convert to dict
+    if isinstance(input_config, str):
+        with open(input_config) as yaml_file:
+            config = yaml.safe_load(yaml_file)
     else:
-        cfg = config_path
+        config = input_config
 
-    assert 'datasets' in cfg
+    assert 'datasets' in config
 
-    if 'basedir' not in cfg:
-        cfg['basedir'] = os.getcwd()
-    elif cfg['basedir'] == 'config':
-        cfg['basedir'] = os.path.dirname(config_path)
+    # `basedir` indicates the directory to store the results.
+    # by default it's the current directory.
+    # The shortcut "config" allows storing the results
+    # in the same directory as `input_config`
+    if 'basedir' not in config:
+        config['basedir'] = os.getcwd()
+    elif config['basedir'] == 'config':
+        config['basedir'] = os.path.dirname(input_config)
 
-    for dataset in cfg['datasets']:
+    outputs = []
+    # set default `output` and `summary` values
+    for dataset in config['datasets']:
         assert 'name' in dataset
         assert 'n_tree' in dataset
 
         if 'output' not in dataset:
-            output = '{}_{}'.format(dataset['name'], dataset['n_tree'])
-            dataset['output'] = os.path.join(cfg['basedir'], output)
+            output = f"{dataset['name']}_{dataset['n_tree']}"
+            dataset['output'] = os.path.join(config['basedir'], output)
+
+        # stop if outputs are not unique
+        assert dataset['output'] not in outputs
+        outputs.append(dataset['output'])
 
         if 'summary' not in dataset:
-            summary = '{}_summary.tsv'.format(dataset['output'])
-            dataset['summary'] = os.path.join(cfg['basedir'], summary)
+            summary = f"{dataset['output']}_summary.tsv"
+            dataset['summary'] = os.path.join(config['basedir'], summary)
 
-    if 'website' not in cfg:
-        cfg['website'] = dict()
-        cfg['website']['output'] = os.path.join(cfg['basedir'], 'website')
-        cfg['website']['url'] = '.'
+    if 'website' not in config:
+        config['website'] = dict()
+        config['website']['output'] = os.path.join(config['basedir'], 'website')
+        config['website']['url'] = '.'
 
-    return cfg
+    return config
 
 
 def load_gac(gac_file):
